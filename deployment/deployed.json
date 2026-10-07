@@ -1,0 +1,40 @@
+{
+  "network": "BNB Smart Chain Testnet",
+  "chainId": 97,
+  "explorer": "https://testnet.bscscan.com",
+  "contract": {
+    "name": "Token42",
+    "symbol": "T42",
+    "decimals": 18,
+    "totalSupply": "1000000000000000000000",
+    "source": "code/Token42.sol",
+    "address": "0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4",
+    "explorerUrl": "https://testnet.bscscan.com/address/0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4"
+  },
+  "deployment": {
+    "deployer": "0xb46c1FACb64e462D26a84e84602aE4e09197Aa51",
+    "transactionHash": "0x6e22cd5f0a5258d217f13e72fe174fdca855a7b97975906975e9bb04846ea593",
+    "transactionUrl": "https://testnet.bscscan.com/tx/0x6e22cd5f0a5258d217f13e72fe174fdca855a7b97975906975e9bb04846ea593",
+    "blockNumber": 135404847,
+    "timestampUtc": "2026-10-07T13:19:06Z",
+    "gasUsed": 1012656,
+    "gasPriceGwei": 1,
+    "feeTbnb": "0.001012656",
+    "tool": "Remix IDE + MetaMask"
+  },
+  "compiler": {
+    "solc": "v0.8.28+commit.7893614a",
+    "optimizer": false,
+    "evmVersion": "default (cancun)",
+    "license": "MIT",
+    "openZeppelin": "5.6.1"
+  },
+  "verification": {
+    "verified": true,
+    "explorer": "BscScan (testnet)",
+    "method": "Verify and Publish web form, Solidity (Single file)",
+    "sourceFile": "deployment/Token42_flattened.sol",
+    "constructorArguments": "none",
+    "sourceCodeUrl": "https://testnet.bscscan.com/address/0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4#code"
+  }
+}
