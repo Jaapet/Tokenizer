@@ -56,7 +56,6 @@ Every transaction costs a small fee ("gas"), paid in the chain's coin. On the te
 
 - The official BNB Chain faucet now asks for at least 0.002 **real** BNB on the main network before it gives tBNB, so we did not use it.
 - We used the **GHOST faucet**: https://ghostchain.io/faucet/bnb-testnet/ (0.01 tBNB per day, no balance needed). Paste your MetaMask address and request tBNB.
-- Another option with no balance needed: https://tokentool.bitbond.com/faucet/bsc-testnet/
 
 **How much you need:** our deployment cost **0.00101 tBNB**. A transfer costs about 0.0001 tBNB. 0.01 tBNB is plenty.
 

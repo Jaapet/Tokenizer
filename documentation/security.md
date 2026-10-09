@@ -66,10 +66,10 @@ Every function is available to every account under the same rules. The deployer 
 
 ### 5.1 The approve race
 
-Example: Alice allowed Bob 5 T42 and now wants to lower it to 3, so she calls `approve(Bob, 3)`.
+Example: [Account 1] allowed [Account 2] 5 T42 and now wants to lower it to 3, so it calls `approve([Account 2], 3)`.
 
-- Transactions are public **before** they are included in a block. Bob can see Alice's change waiting, quickly send a `transferFrom` for the 5 T42 with a higher gas fee so it goes first, and then, once the new allowance is set, spend 3 T42 more.
-- Bob ends up spending **8** T42 instead of 3 or 5.
+- Transactions are public **before** they are included in a block. [Account 2] can see [Account 1]'s change waiting, quickly send a `transferFrom` for the 5 T42 with a higher gas fee so it goes first, and then, once the new allowance is set, spend 3 T42 more.
+- [Account 2] ends up spending **8** T42 instead of 3 or 5.
 
 **How to avoid it:** to change an allowance that is not zero, first `approve(spender, 0)`, check with `allowance` that it was not used in between, and then `approve(spender, newValue)`.
 

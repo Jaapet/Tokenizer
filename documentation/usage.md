@@ -40,7 +40,7 @@ T42 is a **test token**: it lives on a test network and has no monetary value.
 
 **What is gas?** Every action that *changes* the blockchain (sending, approving, burning) is a **transaction**, and the account that sends it pays a small fee in tBNB. About 0.0001 tBNB is enough for one T42 transaction. *Reading* data (a balance, the total supply) is free.
 
-So every account that sends a transaction needs some tBNB, not only T42. For example, in the `approve` + `transferFrom` example below, the second account (Bob) needs tBNB too.
+So every account that sends a transaction needs some tBNB, not only T42. For example, in the `approve` + `transferFrom` example below, the second account ([Account 2]) needs tBNB too.
 
 ## 3. Understanding amounts (decimals)
 
@@ -114,8 +114,8 @@ There are two simple ways to act on the token:
 
 The examples use two accounts:
 
-- **Alice**: holds T42 (for example the deployer account).
-- **Bob**: a second account, with a little tBNB for gas.
+- **[Account 1]**: holds T42 (for example the deployer account).
+- **[Account 2]**: a second account, with a little tBNB for gas.
 
 ### 6.1 Read the token info and a balance
 
@@ -129,39 +129,39 @@ In MetaMask, the balance is shown directly in the Tokens tab.
 
 **With MetaMask:**
 
-1. Select Alice's account, click **T42** in the token list, then **Send**.
-2. Paste Bob's address, type the amount (for example `10`), click **Continue**, then **Confirm**.
+1. Select [Account 1], click **T42** in the token list, then **Send**.
+2. Paste [Account 2]'s address, type the amount (for example `10`), click **Continue**, then **Confirm**.
 
 **With BscScan:**
 
 1. **Write Contract** → `transfer`.
-2. `to`: Bob's address. `value`: `10000000000000000000` (10 T42).
+2. `to`: [Account 2]'s address. `value`: `10000000000000000000` (10 T42).
 3. Click **Write**, then confirm in MetaMask.
 
-Result: Alice has 10 T42 less, Bob has 10 T42 more. The total supply does not change.
+Result: [Account 1] has 10 T42 less, [Account 2] has 10 T42 more. The total supply does not change.
 
 ### 6.3 Let someone spend for you (`approve`, then `transferFrom`)
 
 This is how apps and exchanges move tokens on your behalf: you give a **permission** (an allowance) first, then they use it.
 
-Example: Alice allows Bob to spend up to 5 T42 of hers, and Bob uses it to send 5 T42 to himself.
+Example: [Account 1] allows [Account 2] to spend up to 5 T42 of its tokens, and [Account 2] uses it to send 5 T42 to itself.
 
-1. **Alice** (connected on BscScan) → **Write Contract** → `approve`:
-   - `spender`: Bob's address
+1. **[Account 1]** (connected on BscScan) → **Write Contract** → `approve`:
+   - `spender`: [Account 2]'s address
    - `value`: `5000000000000000000` (5 T42)
    - **Write**, confirm in MetaMask.
-2. Check it: **Read Contract** → `allowance(owner = Alice, spender = Bob)` returns `5000000000000000000`.
-3. Switch MetaMask to **Bob's** account (and reconnect on BscScan if needed). **Write Contract** → `transferFrom`:
-   - `from`: Alice's address
-   - `to`: Bob's address (or any other address)
+2. Check it: **Read Contract** → `allowance(owner = [Account 1], spender = [Account 2])` returns `5000000000000000000`.
+3. Switch MetaMask to **[Account 2]** (and reconnect on BscScan if needed). **Write Contract** → `transferFrom`:
+   - `from`: [Account 1]'s address
+   - `to`: [Account 2]'s address (or any other address)
    - `value`: `5000000000000000000`
-   - **Write**, confirm in MetaMask. Bob pays the gas.
-4. Result: Alice has 5 T42 less, the receiver has 5 T42 more, and the allowance is back to `0`.
+   - **Write**, confirm in MetaMask. [Account 2] pays the gas.
+4. Result: [Account 1] has 5 T42 less, the receiver has 5 T42 more, and the allowance is back to `0`.
 
 Notes:
 
 - `approve` **replaces** the allowance; it does not add to it. To cancel a permission, approve `0`.
-- If Bob tries to move more than his allowance, the transaction fails (`ERC20InsufficientAllowance`).
+- If [Account 2] tries to move more than its allowance, the transaction fails (`ERC20InsufficientAllowance`).
 
 ### 6.4 Destroy tokens (`burn` and `burnFrom`)
 
@@ -175,7 +175,7 @@ Burning destroys tokens forever: they leave your balance **and** the total suppl
 
 **`burnFrom`** (someone else's tokens, with their permission):
 
-- It works like `transferFrom`: it needs an allowance first. Alice approves Bob, then Bob calls `burnFrom(Alice, value)`, and the allowance goes down.
+- It works like `transferFrom`: it needs an allowance first. [Account 1] approves [Account 2], then [Account 2] calls `burnFrom([Account 1], value)`, and the allowance goes down.
 - It **always** needs an allowance, even on your own account: calling `burnFrom` with your own address without approving yourself first fails with `ERC20InsufficientAllowance`. To burn your own tokens, use `burn`.
 
 ### 6.5 Check the result on BscScan
@@ -186,7 +186,9 @@ Burning destroys tokens forever: they leave your balance **and** the total suppl
 
 ## 7. Common errors
 
-When a transaction would fail, MetaMask or BscScan usually warns you **before** you send it (for example "this transaction is likely to fail"). If you send it anyway, it fails and you still pay the gas for it.
+Before sending, MetaMask simulates the transaction for free. When the simulation fails, MetaMask greys out **Confirm** (often without naming the error), so the only option is to reject it. If a failing transaction is sent anyway (for example from another tool), it fails on chain and the sender still pays the gas.
+
+To see the exact error name, simulate the same call with a node (an `eth_call`) or in Remix; the table below lists what each error means.
 
 | Error | Meaning | Fix |
 | --- | --- | --- |
@@ -203,16 +205,26 @@ When a transaction would fail, MetaMask or BscScan usually warns you **before** 
 These tests check every action of the token by hand.
 
 - **Remix VM**: Remix's built-in test chain (free and instant), run on 2026-10-06 before the real deployment.
-- **Live testnet**: the deployed contract on BSC Testnet, filled in during the demo rehearsal.
+- **Live testnet**: the deployed contract on BSC Testnet, run on 2026-10-09 with two accounts ([Account 1] = the deployer, [Account 2] = `0xbB7128213Ba52fa0AD3042BF7009033C714140a8`). Tests 7 to 9 were stopped by MetaMask before sending (Confirm greyed out); the error names come from simulating the same calls on a node.
 
 | # | Action | Expected result | Remix VM | Live testnet |
 | --- | --- | --- | --- | --- |
-| 1 | Read `name`, `symbol`, `decimals` | `Token42`, `T42`, `18` | Pass | |
-| 2 | Read `totalSupply` and the deployer's `balanceOf` | Both `1000000000000000000000` (1,000 T42) | Pass | |
-| 3 | `transfer` T42 to a second account | Sender balance goes down, receiver balance goes up by the same amount | Pass | |
-| 4 | `approve` the second account, then read `allowance` | The allowance equals the approved amount | Pass | |
-| 5 | Second account calls `transferFrom` within the allowance | Tokens move, the allowance goes down by the amount | Pass | |
-| 6 | `burn` some T42 | Balance and `totalSupply` both go down by the amount | Pass | |
-| 7 | `transfer` more than the balance | Fails with `ERC20InsufficientBalance`, no balance changes | Pass | |
-| 8 | `transferFrom` with no allowance | Fails with `ERC20InsufficientAllowance` | Pass | |
-| 9 | `burnFrom` on your own account with no allowance | Fails with `ERC20InsufficientAllowance` | Pass | |
+| 1 | Read `name`, `symbol`, `decimals` | `Token42`, `T42`, `18` | Pass | Pass |
+| 2 | Read `totalSupply` and the deployer's `balanceOf` | Both `1000000000000000000000` (1,000 T42) | Pass | Pass |
+| 3 | `transfer` T42 to a second account | Sender balance goes down, receiver balance goes up by the same amount | Pass | Pass |
+| 4 | `approve` the second account, then read `allowance` | The allowance equals the approved amount | Pass | Pass |
+| 5 | Second account calls `transferFrom` within the allowance | Tokens move, the allowance goes down by the amount | Pass | Pass |
+| 6 | `burn` some T42 | Balance and `totalSupply` both go down by the amount | Pass | Pass |
+| 7 | `transfer` more than the balance | Fails with `ERC20InsufficientBalance`, no balance changes | Pass | Pass |
+| 8 | `transferFrom` with no allowance | Fails with `ERC20InsufficientAllowance` | Pass | Pass |
+| 9 | `burnFrom` on your own account with no allowance | Fails with `ERC20InsufficientAllowance` | Pass | Pass |
+
+Live transactions (click to see them on BscScan):
+
+| Test | Transaction | Result after it |
+| --- | --- | --- |
+| Gas for [Account 2] | [send 0.001 tBNB to [Account 2]](https://testnet.bscscan.com/tx/0x7b8e54860964102c2e0383cdf6cf7b95ce36994d4dcf7885cb9d4fe7ebca646b) | [Account 2] can pay fees |
+| 3 | [`transfer` 10 T42 to [Account 2]](https://testnet.bscscan.com/tx/0x815af8aa8d432de613e42c9b380f171c55bb58fb8e5e41cc7232ae3c19b10531) | [Account 1] 990, [Account 2] 10 |
+| 4 | [`approve` [Account 2] for 5 T42](https://testnet.bscscan.com/tx/0xef2b5112111f4e9c34d0c9a8aa96f2adcacf8429af6820f093c6f14d2ea7e1ad) | Allowance 5 |
+| 5 | [`transferFrom` 5 T42, sent by [Account 2]](https://testnet.bscscan.com/tx/0x844aa26780d3865f0916a9059010ae7bcde5540d4c038c4839059182e854a631) | [Account 1] 985, [Account 2] 15, allowance 0 |
+| 6 | [`burn` 1 T42](https://testnet.bscscan.com/tx/0x6118fc77188019cb49ef394a17492cfd9d2614d463af48c440021452abfb0b25) | [Account 1] 984, total supply 999 |
