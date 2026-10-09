@@ -93,7 +93,7 @@ Some apps ask for an "unlimited" allowance (the maximum number, `2^256 - 1`). Wi
 - **The source code is verified on BscScan.** BscScan recompiled our source with the same settings and checked that it produces exactly the bytecode deployed on the chain ("Successfully generated matching Bytecode and ABI"). Anyone can read the code on the contract's **Contract** tab and be sure that it is what runs.
   https://testnet.bscscan.com/address/0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4#code
 - **Every action is public.** Every transfer, approval and burn is recorded on the blockchain, with its `Transfer` or `Approval` event, and visible on BscScan.
-- **Reproducible.** The exact compiler settings are in [`deployment/compiler-settings.md`](../deployment/compiler-settings.md), so anyone can recompile and compare.
+- **Reproducible.** The exact compiler settings are in [`deployment/COMPILER-SETTINGS.md`](../deployment/COMPILER-SETTINGS.md), so anyone can recompile and compare.
 
 ## 8. Trade-offs and limits
 

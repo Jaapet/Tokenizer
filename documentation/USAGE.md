@@ -99,7 +99,7 @@ These are **all** the functions of the contract. They come from the BEP-20 / ERC
 | `burn(value)` | Destroys `value` of **your** T42. The total supply goes down | Any holder, for their own tokens |
 | `burnFrom(account, value)` | Destroys `value` of `account`'s T42, using the allowance `account` gave you | Only a spender with a large enough allowance |
 
-**What does not exist:** there is no owner, no `mint` (nobody can create new tokens), no `pause`, and no blacklist. Nobody has special powers over the contract, not even the deployer. See [security.md](security.md).
+**What does not exist:** there is no owner, no `mint` (nobody can create new tokens), no `pause`, and no blacklist. Nobody has special powers over the contract, not even the deployer. See [SECURITY.md](SECURITY.md).
 
 Every transfer and burn emits a `Transfer` event, and every approval emits an `Approval` event. BscScan uses them to show the token's history. A burn appears as a transfer **to** the zero address `0x0000000000000000000000000000000000000000`.
 

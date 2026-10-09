@@ -69,7 +69,7 @@ Every transaction costs a small fee ("gas"), paid in the chain's coin. On the te
    - **Optimization**: off.
    - **EVM Version**: default.
 
-   All settings and the reasons for them are in [compiler-settings.md](compiler-settings.md).
+   All settings and the reasons for them are in [COMPILER-SETTINGS.md](COMPILER-SETTINGS.md).
 4. Click **Compile Token42.sol**. A green check must appear, with no warnings and no errors.
 
 ## 5. Deploy on BSC Testnet

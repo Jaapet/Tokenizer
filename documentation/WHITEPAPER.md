@@ -84,7 +84,7 @@ Every action that does not respect the rules (not enough tokens, not enough allo
 
 Each action is a transaction, so the caller pays gas in tBNB (about 0.0001 tBNB per action).
 
-A step-by-step guide for each action, with MetaMask and BscScan, is in [usage.md](usage.md).
+A step-by-step guide for each action, with MetaMask and BscScan, is in [USAGE.md](USAGE.md).
 
 ## 5. Token distribution
 
@@ -98,14 +98,14 @@ Token42 has **no governance**: there is no owner, no admin, no vote, and no upgr
 
 This is a deliberate security choice: a privilege that does not exist cannot be abused, and an admin key that does not exist cannot be stolen. The token's logic comes from OpenZeppelin, an audited library, and the deployed code is verified on BscScan.
 
-The full analysis (privileges, supply, allowance risks, keys, trade-offs) is in [security.md](security.md).
+The full analysis (privileges, supply, allowance risks, keys, trade-offs) is in [SECURITY.md](SECURITY.md).
 
 ## 7. Lifecycle
 
 | Date | Step |
 | --- | --- |
 | 2026-10-06 | Contract written ([`code/Token42.sol`](../code/Token42.sol)) and compiled in Remix IDE with no warnings |
-| 2026-10-06 | Every action tested on the Remix VM, Remix's built-in test chain (see [usage.md, section 8](usage.md#8-manual-test-list)) |
+| 2026-10-06 | Every action tested on the Remix VM, Remix's built-in test chain (see [USAGE.md, section 8](USAGE.md#8-manual-test-list)) |
 | 2026-10-07 | Deployed on BSC Testnet from Remix and MetaMask, in block `135404847` ([transaction](https://testnet.bscscan.com/tx/0x6e22cd5f0a5258d217f13e72fe174fdca855a7b97975906975e9bb04846ea593)) |
 | 2026-10-07 | Source code verified on BscScan ([Contract tab](https://testnet.bscscan.com/address/0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4#code)) |
 

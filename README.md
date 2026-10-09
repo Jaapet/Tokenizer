@@ -28,14 +28,14 @@ code/
   Token42.sol                       the token's source code (commented)
 deployment/
   DEPLOY.md                         step-by-step deployment and BscScan verification guide
-  compiler-settings.md              exact compiler settings (needed to verify)
+  COMPILER-SETTINGS.md              exact compiler settings (needed to verify)
   deployed.json                     address, transaction, block, deployer, settings
   Token42.abi.json                  the contract's interface (ABI), for apps and tools
   Token42_flattened.sol             single-file source, exactly as verified on BscScan
 documentation/
-  whitepaper.md                     what Token42 is and how it works
-  usage.md                          how to use the token (MetaMask, BscScan) + test list
-  security.md                       ownership, privileges, risks and trade-offs
+  WHITEPAPER.md                     what Token42 is and how it works
+  USAGE.md                          how to use the token (MetaMask, BscScan) + test list
+  SECURITY.md                       ownership, privileges, risks and trade-offs
 ```
 
 ## Choices and why
@@ -50,17 +50,17 @@ documentation/
 | Name and ticker | **Token42**, ticker **T42** | The subject requires "42" in the name. Short and clear. |
 | Decimals | **18** | The standard value (same as BNB and most tokens); wallets display it correctly with no setup. |
 | Supply | **1,000 T42**, fixed, all minted to the deployer at deployment | A small round number, easy to check in tests and the demo. Minting once in the constructor means the supply can never grow. |
-| Admin | **None**: no owner, no `mint`, no `pause`, no blacklist | The simplest and safest answer to ownership and privileges: a privilege that does not exist cannot be abused, and an admin key that does not exist cannot be stolen. The trade-off is that the contract cannot be changed; see [security.md](documentation/security.md). |
+| Admin | **None**: no owner, no `mint`, no `pause`, no blacklist | The simplest and safest answer to ownership and privileges: a privilege that does not exist cannot be abused, and an admin key that does not exist cannot be stolen. The trade-off is that the contract cannot be changed; see [SECURITY.md](documentation/SECURITY.md). |
 | Development tool | **Remix IDE** (in the browser), not Hardhat or Foundry | Nothing to install: write, compile, test on the built-in Remix VM, deploy with MetaMask, and flatten for verification, all in one place. Enough for a single small contract. |
-| Compiler settings | Optimizer **off**, EVM version **default** | The contract is small, so optimizing saves little gas; default settings keep the verification simple. Details in [compiler-settings.md](deployment/compiler-settings.md). |
+| Compiler settings | Optimizer **off**, EVM version **default** | The contract is small, so optimizing saves little gas; default settings keep the verification simple. Details in [COMPILER-SETTINGS.md](deployment/COMPILER-SETTINGS.md). |
 | Wallet | **MetaMask**, with an account used only for this project | The most common wallet; it works with Remix and BscScan. A test-only account means no real funds are ever at risk. |
 | Explorer and verification | **BscScan Testnet**, verified by hand with the **Verify and Publish** web form and a **flattened** source file | Verification publishes the source code, so anyone can check it matches the deployed contract. Remix's "Verify Contract on Explorers" switch did not verify on BscScan for us, so we used the web form: it needs no API key. It takes one file, so we flattened the contract (OpenZeppelin code included) in Remix. |
 | Faucet | **GHOST faucet** (https://ghostchain.io/faucet/bnb-testnet/) | The official BNB Chain faucet linked in the subject now requires holding 0.002 **real** BNB on the main network, so we used a faucet with no such requirement. Deployment cost about 0.001 tBNB. |
 
 ## Quick start
 
-- **Use the token** (see it in MetaMask, transfer, approve, burn): [documentation/usage.md](documentation/usage.md)
-- **Understand the token**: [documentation/whitepaper.md](documentation/whitepaper.md)
+- **Use the token** (see it in MetaMask, transfer, approve, burn): [documentation/USAGE.md](documentation/USAGE.md)
+- **Understand the token**: [documentation/WHITEPAPER.md](documentation/WHITEPAPER.md)
 - **Deploy and verify your own copy**: [deployment/DEPLOY.md](deployment/DEPLOY.md)
 - **Read the code**: [code/Token42.sol](code/Token42.sol)
 
@@ -71,4 +71,4 @@ documentation/
 - **Audited, pinned code** (OpenZeppelin 5.6.1, Solidity 0.8.28) and **source verified on BscScan**.
 - **Test-only keys.** No private key or secret is stored in this repository.
 
-Full details, including allowance risks and the trade-offs of having no admin: [documentation/security.md](documentation/security.md).
+Full details, including allowance risks and the trade-offs of having no admin: [documentation/SECURITY.md](documentation/SECURITY.md).
