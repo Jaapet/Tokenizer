@@ -17,7 +17,7 @@
 
 ## 1. Abstract
 
-**Token42 (T42)** is a BEP-20 token deployed on the **BNB Smart Chain Testnet**. It has a fixed supply of 1,000 tokens, all created once at deployment, and no owner or administrator: after deployment, nobody has special powers over it. Holders can send, approve, and burn (destroy) their tokens.
+**Token42 (T42)** is a BEP-20 token deployed on the **BNB Smart Chain Testnet**. It has a fixed initial supply of 1,000 tokens, all created once at deployment, and no owner or administrator: after deployment, nobody has special powers over it. Holders can send, approve, and burn (destroy) their tokens.
 
 It was built for the 42 school **Tokenizer** project, to learn how a token is written, tested, deployed, and published on a public blockchain. It has no monetary value and is not for sale.
 

@@ -1,6 +1,6 @@
 # Token42 (T42)
 
-**Token42** is a BEP-20 token deployed on the **BNB Smart Chain Testnet**, built for the 42 school **Tokenizer** project. It has a fixed supply of **1,000 T42**, all created at deployment, and **no owner or admin**: after deployment, nobody has special powers over it. Holders can send, approve, and burn their tokens.
+**Token42** is a BEP-20 token deployed on the **BNB Smart Chain Testnet**, built for the 42 school **Tokenizer** project. It has a fixed initial supply of **1,000 T42**, all created at deployment, and **no owner or admin**: after deployment, nobody has special powers over it. Holders can send, approve, and burn their tokens.
 
 > T42 is a **test token**: it only exists on a test network and has **no monetary value**.
 
@@ -36,6 +36,7 @@ documentation/
   WHITEPAPER.md                     what Token42 is and how it works
   USAGE.md                          how to use the token (MetaMask, BscScan) + test list
   SECURITY.md                       ownership, privileges, risks and trade-offs
+  DEMO.md                           short live demo guide (one action per feature)
 ```
 
 ## Choices and why
@@ -49,7 +50,7 @@ documentation/
 | Burn | Holders can **burn** (destroy) their own tokens | Shows a supply that can only go down. It only acts on the caller's own tokens (or an allowance they were given), so it gives no one extra power. |
 | Name and ticker | **Token42**, ticker **T42** | The subject requires "42" in the name. Short and clear. |
 | Decimals | **18** | The standard value (same as BNB and most tokens); wallets display it correctly with no setup. |
-| Supply | **1,000 T42**, fixed, all minted to the deployer at deployment | A small round number, easy to check in tests and the demo. Minting once in the constructor means the supply can never grow. |
+| Supply | **1,000 T42**, fixed initial supply, all minted to the deployer at deployment | A small round number, easy to check in tests and the demo. Minting once in the constructor means the supply can never grow. |
 | Admin | **None**: no owner, no `mint`, no `pause`, no blacklist | The simplest and safest answer to ownership and privileges: a privilege that does not exist cannot be abused, and an admin key that does not exist cannot be stolen. The trade-off is that the contract cannot be changed; see [SECURITY.md](documentation/SECURITY.md). |
 | Development tool | **Remix IDE** (in the browser), not Hardhat or Foundry | Nothing to install: write, compile, test on the built-in Remix VM, deploy with MetaMask, and flatten for verification, all in one place. Enough for a single small contract. |
 | Compiler settings | Optimizer **off**, EVM version **default** | The contract is small, so optimizing saves little gas; default settings keep the verification simple. Details in [COMPILER-SETTINGS.md](deployment/COMPILER-SETTINGS.md). |
@@ -67,7 +68,7 @@ documentation/
 ## Security in short
 
 - **No owner, no admin functions.** The contract's 11 functions are the standard BEP-20 ones plus `burn` and `burnFrom`; each only acts on the caller's own tokens or on an allowance a holder gave. The ABI ([Token42.abi.json](deployment/Token42.abi.json)) proves there is nothing else.
-- **Fixed supply.** No tokens can be created after deployment; burning can only lower the supply.
+- **Fixed initial supply.** No tokens can be created after deployment; burning can only lower the supply.
 - **Audited, pinned code** (OpenZeppelin 5.6.1, Solidity 0.8.28) and **source verified on BscScan**.
 - **Test-only keys.** No private key or secret is stored in this repository.
 
