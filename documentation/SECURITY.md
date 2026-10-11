@@ -12,6 +12,7 @@ This document explains the security choices behind **Token42 (T42)**: who contro
 6. [Keys and wallets](#6-keys-and-wallets)
 7. [Transparency](#7-transparency)
 8. [Trade-offs and limits](#8-trade-offs-and-limits)
+9. [Bonus: the multisig treasury](#9-bonus-the-multisig-treasury)
 
 ---
 
@@ -106,3 +107,22 @@ Having no admin is the simplest and safest design for this token, but it has a c
 | Transactions cannot be undone | T42 sent to a wrong address (including the token contract's own address) are lost. Nobody can send them back. | This is how every blockchain token works. Double-check addresses before sending. |
 | All supply starts with the deployer | At first, one account holds all 1,000 T42. | This only concerns who holds tokens, not powers: the deployer cannot do anything a normal holder cannot. The tokens can then be distributed with `transfer`. |
 | Testnet only | T42 has no value, and the testnet could be reset by its operators. | The subject requires a test network: no real money is involved. |
+
+## 9. Bonus: the multisig treasury
+
+100 T42 are held by a separate contract, **MultiSig42** (`0x79546751f76080964DD1FcA717190d530D5b9840`), which only sends them when **both** of its two signers ([Account 1] and [Account 2]) agree. Token42 itself is unchanged and still has no admin.
+
+- **No single key can move the treasury.** A transfer needs a proposal from one signer and a confirmation from the other; `executeTransfer` fails below 2 confirmations (`NotEnoughConfirmations`). This was tested on the Remix VM and live on the testnet.
+- **No owner, fixed rules.** The token address, the two signers and the threshold are `immutable` or `constant`: set once at deployment, they can never change. Nobody can add a signer or lower the threshold. The ABI ([`MultiSig42.abi.json`](../deployment/MultiSig42.abi.json)) shows no admin function.
+- **Only signers can act**, each signer can confirm a proposal only **once**, and a proposal can be executed only **once** (`NotASigner`, `AlreadyConfirmed`, `AlreadyExecuted`).
+- **Safe call order.** `executeTransfer` marks the proposal as executed **before** calling the token ("checks, effects, interactions"), so even a call back into the multisig could not execute it twice. It also checks the value returned by the token's `transfer`.
+- **T42 only.** The multisig can only call Token42's `transfer`, never an arbitrary contract, and it has no `payable` function.
+- **Verified** on BscScan, like the token.
+
+| Limit | Consequence | Why it is acceptable here |
+| --- | --- | --- |
+| 2 of 2 signers | If **one** signer loses its key, the treasury is locked forever. | Simplest real multisig, test token only. A 2-of-3 setup would remove this risk, at the cost of a third account. |
+| Both signers together | If both signers agree (or both keys are stolen), they can move the treasury. | That is the chosen trust model; it is still much safer than one key. |
+| No signer change | A compromised signer cannot be replaced. | Same choice as the token: no admin. A new multisig would be deployed instead. |
+
+Full description: [MULTISIG.md](MULTISIG.md).

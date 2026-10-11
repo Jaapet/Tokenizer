@@ -101,6 +101,8 @@ These are **all** the functions of the contract. They come from the BEP-20 / ERC
 
 **What does not exist:** there is no owner, no `mint` (nobody can create new tokens), no `pause`, and no blacklist. Nobody has special powers over the contract, not even the deployer. See [SECURITY.md](SECURITY.md).
 
+**Bonus:** 100 T42 are held as a treasury by a separate 2-of-2 multisig contract, MultiSig42; how it works and how to use it is in [MULTISIG.md](MULTISIG.md).
+
 Every transfer and burn emits a `Transfer` event, and every approval emits an `Approval` event. BscScan uses them to show the token's history. A burn appears as a transfer **to** the zero address `0x0000000000000000000000000000000000000000`.
 
 ## 6. Step-by-step actions

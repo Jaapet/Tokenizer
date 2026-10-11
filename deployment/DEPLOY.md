@@ -2,6 +2,8 @@
 
 This guide explains, step by step, how `Token42` (T42) was deployed on the **BNB Smart Chain Testnet** and verified on **BscScan**. Anyone can follow it to deploy their own copy.
 
+Section 10 explains how the bonus contract, the **MultiSig42** treasury, was deployed and verified the same way.
+
 Everything happens in the browser: no installation other than the MetaMask extension.
 
 > The official deployment is recorded in [deployed.json](deployed.json):
@@ -20,6 +22,7 @@ Everything happens in the browser: no installation other than the MetaMask exten
 7. [Verify the source code on BscScan](#7-verify-the-source-code-on-bscscan)
 8. [After deployment](#8-after-deployment)
 9. [Troubleshooting](#9-troubleshooting)
+10. [Bonus: deploy the MultiSig42 treasury](#10-bonus-deploy-the-multisig42-treasury)
 
 ---
 
@@ -31,7 +34,7 @@ Everything happens in the browser: no installation other than the MetaMask exten
 | MetaMask | A wallet extension: it holds your account and signs transactions | https://metamask.io |
 | Remix IDE | An online editor that compiles and deploys Solidity contracts | https://remix.ethereum.org |
 | BscScan Testnet | The block explorer: a website to look at transactions and contracts | https://testnet.bscscan.com |
-| The source code | [`code/Token42.sol`](../code/Token42.sol) | |
+| The source code | [`code/Token42.sol`](../code/Token42.sol), and [`code/MultiSig42.sol`](../code/MultiSig42.sol) for the bonus (section 10) | |
 
 **Use a test-only account.** Never use a wallet that holds real money for this project.
 
@@ -201,3 +204,51 @@ How to use the token (transfer, approve, burn) is explained in the `documentatio
 | BscScan says the bytecode does not match | One setting differs: check compiler version (exact commit), optimization **No**, EVM default, and that the **whole** flattened file was pasted |
 | The ABI copied from Remix is `[]` | The wrong contract is selected in the compiler's **Contract** list. Choose **Token42**, or copy the ABI from BscScan |
 | MetaMask shows a wrong token amount | Wrong decimals when importing the token. Remove it and import again with decimals **18** |
+
+## 10. Bonus: deploy the MultiSig42 treasury
+
+`MultiSig42` ([`code/MultiSig42.sol`](../code/MultiSig42.sol)) is a 2-of-2 multisig that holds a T42 treasury. What it does and how to use it is explained in [documentation/MULTISIG.md](../documentation/MULTISIG.md). It is deployed **after** Token42, because it needs the token's address.
+
+The official multisig is `0x79546751f76080964DD1FcA717190d530D5b9840` ([see it on BscScan](https://testnet.bscscan.com/address/0x79546751f76080964DD1FcA717190d530D5b9840)); its details are in the `multisig` block of [deployed.json](deployed.json).
+
+### 10.1 Compile and test
+
+1. In Remix, create `MultiSig42.sol` next to `Token42.sol` and paste the content of [`code/MultiSig42.sol`](../code/MultiSig42.sol). It imports only OpenZeppelin's `IERC20` interface (version 5.6.1).
+2. Compile it with the **same settings** as Token42 (0.8.28, optimization off, EVM default). No warnings, no errors.
+3. Recommended: test it first on the **Remix VM** (deploy Token42 and MultiSig42 there, send T42 to the multisig, then submit, confirm and execute). The test list is in [MULTISIG.md, section 9](../documentation/MULTISIG.md#9-tests).
+
+### 10.2 Deploy
+
+This sends a real transaction (our deployment cost **0.000997 tBNB**).
+
+1. **Deploy & Run** tab, Environment **Browser Extension → MetaMask**, chain id **97**, your test account.
+2. In the **Contract** list, choose **MultiSig42** (not Token42: that would create a second token).
+3. Open the arrow next to **Deploy** and fill in the 3 constructor fields. ⚠️ They can **never** be changed after deployment, so check each address twice:
+
+   | Field | Our value |
+   | --- | --- |
+   | `tokenAddress` | `0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4` (Token42) |
+   | `signer1Address` | `0xb46c1FACb64e462D26a84e84602aE4e09197Aa51` ([Account 1]) |
+   | `signer2Address` | `0xbB7128213Ba52fa0AD3042BF7009033C714140a8` ([Account 2]) |
+
+4. Click **transact**, check the fee in MetaMask, and **Confirm**. Write down the contract address and the transaction hash, like in step 5.
+5. Check on BscScan **Read Contract** (after verification) or in Remix: `token`, `signer1`, `signer2` and `REQUIRED_CONFIRMATIONS` (`2`) must be right **before** sending any T42 to the multisig.
+
+### 10.3 Fill the treasury
+
+The multisig receives T42 like any address: in MetaMask, on the deployer account, send **100 T42** to the multisig address (MetaMask may warn that it is a contract address: that is expected). Then `treasuryBalance` shows `100000000000000000000`.
+
+### 10.4 Verify on BscScan
+
+Same as step 7, with two differences:
+
+1. Flatten `MultiSig42.sol` in Remix and add the `// SPDX-License-Identifier: MIT` line at the top. Ours is [MultiSig42_flattened.sol](MultiSig42_flattened.sol).
+2. **Constructor Arguments** are **not** empty this time: BscScan needs the 3 addresses given at deployment, **ABI-encoded**. Each address is written in lowercase hex without `0x`, padded on the left with zeros to 64 characters, and the three are joined in order, with no `0x` at the start:
+
+   ```
+   000000000000000000000000179c9a66f8ba033eee37da8953b192f981ff2bc4000000000000000000000000b46c1facb64e462d26a84e84602ae4e09197aa51000000000000000000000000bb7128213ba52fa0ad3042bf7009033c714140a8
+   ```
+
+   These are also the last 192 characters of the deployment transaction's input data (BscScan may fill them in by itself).
+
+Result: "Successfully generated matching Bytecode and ABI". Then copy the **Contract ABI** from BscScan: ours is [MultiSig42.abi.json](MultiSig42.abi.json) (1 constructor, 12 functions, 3 events, 8 errors; no owner or admin function).

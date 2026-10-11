@@ -36,5 +36,46 @@
     "sourceFile": "deployment/Token42_flattened.sol",
     "constructorArguments": "none",
     "sourceCodeUrl": "https://testnet.bscscan.com/address/0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4#code"
+  },
+  "multisig": {
+    "name": "MultiSig42",
+    "description": "2-of-2 multisig holding a T42 treasury (bonus)",
+    "source": "code/MultiSig42.sol",
+    "address": "0x79546751f76080964DD1FcA717190d530D5b9840",
+    "explorerUrl": "https://testnet.bscscan.com/address/0x79546751f76080964DD1FcA717190d530D5b9840",
+    "token": "0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4",
+    "signers": [
+      "0xb46c1FACb64e462D26a84e84602aE4e09197Aa51",
+      "0xbB7128213Ba52fa0AD3042BF7009033C714140a8"
+    ],
+    "requiredConfirmations": 2,
+    "deployment": {
+      "deployer": "0xb46c1FACb64e462D26a84e84602aE4e09197Aa51",
+      "transactionHash": "0x891a920946350c26970acd93b10cb22f3d09d3775f2706eac9fd155b8f15e18b",
+      "transactionUrl": "https://testnet.bscscan.com/tx/0x891a920946350c26970acd93b10cb22f3d09d3775f2706eac9fd155b8f15e18b",
+      "blockNumber": 136166799,
+      "timestampUtc": "2026-10-11T12:33:57Z",
+      "gasUsed": 996773,
+      "gasPriceGwei": 1,
+      "feeTbnb": "0.000996773",
+      "tool": "Remix IDE + MetaMask"
+    },
+    "treasuryFunding": {
+      "amount": "100000000000000000000",
+      "from": "0xb46c1FACb64e462D26a84e84602aE4e09197Aa51",
+      "transactionHash": "0x1d8703054636b24c6d8065d50a87839a80b2099adf60fdb155cd42f4a61380b5",
+      "transactionUrl": "https://testnet.bscscan.com/tx/0x1d8703054636b24c6d8065d50a87839a80b2099adf60fdb155cd42f4a61380b5",
+      "blockNumber": 136168719,
+      "timestampUtc": "2026-10-11T12:48:21Z"
+    },
+    "compiler": "same as Token42 (see compiler above)",
+    "verification": {
+      "verified": true,
+      "explorer": "BscScan (testnet)",
+      "method": "Verify and Publish web form, Solidity (Single file)",
+      "sourceFile": "deployment/MultiSig42_flattened.sol",
+      "constructorArguments": "000000000000000000000000179c9a66f8ba033eee37da8953b192f981ff2bc4000000000000000000000000b46c1facb64e462d26a84e84602ae4e09197aa51000000000000000000000000bb7128213ba52fa0ad3042bf7009033c714140a8",
+      "sourceCodeUrl": "https://testnet.bscscan.com/address/0x79546751f76080964DD1FcA717190d530D5b9840#code"
+    }
   }
 }

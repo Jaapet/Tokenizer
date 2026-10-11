@@ -1,6 +1,6 @@
 # Token42 (T42) whitepaper
 
-*Version 1.0, October 2026. Author: ndesprez (42 school, Tokenizer project).*
+*Version 1.1, October 2026. Author: ndesprez (42 school, Tokenizer project).*
 
 ## Contents
 
@@ -17,7 +17,7 @@
 
 ## 1. Abstract
 
-**Token42 (T42)** is a BEP-20 token deployed on the **BNB Smart Chain Testnet**. It has a fixed initial supply of 1,000 tokens, all created once at deployment, and no owner or administrator: after deployment, nobody has special powers over it. Holders can send, approve, and burn (destroy) their tokens.
+**Token42 (T42)** is a BEP-20 token deployed on the **BNB Smart Chain Testnet**. It has a fixed initial supply of 1,000 tokens, all created once at deployment, and no owner or administrator: after deployment, nobody has special powers over it. Holders can send, approve, and burn (destroy) their tokens. As a bonus, a treasury of 100 T42 is held by **MultiSig42**, a 2-of-2 multisig contract that only moves it when both of its signers agree.
 
 It was built for the 42 school **Tokenizer** project, to learn how a token is written, tested, deployed, and published on a public blockchain. It has no monetary value and is not for sale.
 
@@ -90,6 +90,7 @@ A step-by-step guide for each action, with MetaMask and BscScan, is in [USAGE.md
 
 - At deployment, on 2026-10-07, the **constructor** created all 1,000 T42 and sent them to the deployer account `0xb46c1FACb64e462D26a84e84602aE4e09197Aa51`.
 - There is no sale, no mining, no reward, and no later creation of tokens. The deployer distributes T42 with ordinary transfers (for example, to a second account for the demo).
+- **Treasury (bonus):** on 2026-10-11, 100 T42 (10% of the initial supply) were sent to **MultiSig42**, a 2-of-2 multisig contract (`0x79546751f76080964DD1FcA717190d530D5b9840`). These tokens can only leave the treasury when both of its signers confirm. See [MULTISIG.md](MULTISIG.md).
 - The total supply can only **go down**, when holders burn tokens. The current supply can always be read with `totalSupply()` on BscScan.
 
 ## 6. Governance and security
@@ -98,7 +99,9 @@ Token42 has **no governance**: there is no owner, no admin, no vote, and no upgr
 
 This is a deliberate security choice: a privilege that does not exist cannot be abused, and an admin key that does not exist cannot be stolen. The token's logic comes from OpenZeppelin, an audited library, and the deployed code is verified on BscScan.
 
-The full analysis (privileges, supply, allowance risks, keys, trade-offs) is in [SECURITY.md](SECURITY.md).
+The only shared control in the project is the **treasury multisig** (bonus): it does not give anyone power over the token, it only decides, with both signers, how its own 100 T42 are spent.
+
+The full analysis (privileges, supply, allowance risks, keys, trade-offs, multisig) is in [SECURITY.md](SECURITY.md).
 
 ## 7. Lifecycle
 
@@ -108,6 +111,7 @@ The full analysis (privileges, supply, allowance risks, keys, trade-offs) is in 
 | 2026-10-06 | Every action tested on the Remix VM, Remix's built-in test chain (see [USAGE.md, section 8](USAGE.md#8-manual-test-list)) |
 | 2026-10-07 | Deployed on BSC Testnet from Remix and MetaMask, in block `135404847` ([transaction](https://testnet.bscscan.com/tx/0x6e22cd5f0a5258d217f13e72fe174fdca855a7b97975906975e9bb04846ea593)) |
 | 2026-10-07 | Source code verified on BscScan ([Contract tab](https://testnet.bscscan.com/address/0x179C9a66f8ba033Eee37dA8953B192f981ff2bc4#code)) |
+| 2026-10-11 | Bonus: MultiSig42 written, tested on the Remix VM, deployed in block `136166799` ([transaction](https://testnet.bscscan.com/tx/0x891a920946350c26970acd93b10cb22f3d09d3775f2706eac9fd155b8f15e18b)), verified on BscScan, and funded with 100 T42 |
 
 How to deploy and verify a copy is explained in [`deployment/DEPLOY.md`](../deployment/DEPLOY.md). Since the contract cannot be changed, any new version would be a new contract at a new address.
 
